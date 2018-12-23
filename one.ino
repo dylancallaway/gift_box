@@ -1,3 +1,11 @@
+#include <SD.h>
+#include <SPI.h>
+#include <Adafruit_STMPE610.h>
+#include <Adafruit_HX8357.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SPITFT_Macros.h>
+#include <Adafruit_SPITFT.h>
+#include <gfxfont.h>
 #include <analogWrite.h>
 #include <ESP32PWM.h>
 #include <ESP32Servo.h>
@@ -7,12 +15,6 @@ Servo myservo; // create servo object to control a servo
 // twelve servo objects can be created on most boards
 
 int pos = 0; // variable to store the servo position
-
-#include "SPI.h"
-#include "Adafruit_GFX.h"
-#include "Adafruit_HX8357.h"
-#include "Adafruit_STMPE610.h"
-#include <SD.h>
 
 #define STMPE_CS 32
 #define TFT_CS 15
@@ -101,15 +103,16 @@ void loop()
 
 void test_intro()
 {
-	touch_x_low = 0;
-	touch_x_high = 480;
-	touch_y_low = 0;
-	touch_y_high = 320;
+	touch_x_low = 50;
+	touch_x_high = 4430;
+	touch_y_low = 50;
+	touch_y_high = 270;
 
 	if (draw_flag == 0)
 	{
 		bmpDraw("/intro.bmp", 0, 0);
 		draw_flag = 1;
+		myservo.write(110);
 	}
 	if (p.x > touch_x_low && p.x < touch_x_high && p.y > touch_y_low && p.y < touch_y_high)
 	{
@@ -215,10 +218,11 @@ void test_5()
 
 void test_end()
 {
-	touch_x_low = 0;
-	touch_x_high = 480;
-	touch_y_low = 0;
-	touch_y_high = 320;
+	touch_x_low = 50;
+	touch_x_high = 4430;
+	touch_y_low = 50;
+	touch_y_high = 270;
+
 	if (draw_flag == 0)
 	{
 		bmpDraw("/end.bmp", 0, 0);
@@ -226,8 +230,9 @@ void test_end()
 	}
 	if (p.x > touch_x_low && p.x < touch_x_high && p.y > touch_y_low && p.y < touch_y_high)
 	{
-		draw_flag = 0;
-		test_num = 0;
+		draw_flag = 1;
+		test_num = 6;
+		myservo.write(180);
 	}
 }
 
